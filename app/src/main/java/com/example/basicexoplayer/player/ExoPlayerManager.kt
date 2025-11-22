@@ -12,13 +12,13 @@ object ExoPlayerManager {
         return exoPlayer
     }
 
-    fun initializePlayer(context: Context, url: String) {
+    fun initializePlayer(context: Context, url: String, onLoadingChanged: (Boolean) -> Unit) {
         if (exoPlayer == null || url != currentUrl) {
             releasePlayer()
             currentUrl = url
             exoPlayer = ExoPlayer.Builder(context).build().apply {
                 setMediaItem(MediaItem.fromUri(url))
-                addListener(PlayerEventListener())
+                addListener(PlayerEventListener(onLoadingChanged))
                 prepare()
                 playWhenReady = true
             }
